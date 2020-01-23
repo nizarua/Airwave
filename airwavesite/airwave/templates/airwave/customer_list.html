@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <p class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {{ message }}
+        </p>
+    {% endfor %}
+  {% endif %}
+
+  <p>    
+    <a href="{% url 'airwave:customer_add' %}" class="btn btn-primary btn-sm">New Customer</a>    
+  </p>
+  <table class="table table-bordered table-sm" style="font-size:0.75rem">
+    <thead>
+      <tr>
+        <th>Customer ID</th>
+        <th>Customer Name</th>
+        <th>Area </th>
+        <th>Mobile</th>
+        <th>User ID</th>
+        <th>Due Amount(Rs.)</th>        
+        <th>Action</th>       
+      </tr>
+    </thead>
+    <tbody>
+      {% for cust in customer %}
+        <tr>
+          <td>{{ cust.customer_id }}</td>
+          <td>{{ cust.name }}</td>
+          <td>{{ cust.area }}</td>
+          <td>{{ cust.mobile1}}</td>
+          <td>{{ cust.active_user_id }}</td>  
+          <td>{{ cust.balance_due }}</td>       
+          <td>
+            <div class="btn-group" role="group" aria-label="actions">              
+              <a href="{% url 'airwave:customer_edit' cust.pk %}" class="btn btn-primary btn-xs">Modify</a>
+              <a href="{% url 'airwave:customer_delete' cust.pk %}" class="btn btn-danger btn-xs">Delete</a>
+            </div>
+          </td>        
+        </tr>
+      {% empty %}
+        <tr class="table-active">
+          <td colspan="3">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post" novalidate style="line-height: 1rem;">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-4">
+        {{ form.plan_name|as_crispy_field }}
+      </div>
+      <div class="col-2">
+        {{ form.billing_type|as_crispy_field }}
+      </div>    
+      <div class="col-2">
+        {{ form.billing_frequency|as_crispy_field }}
+      </div>  
+      <div class="col-2">
+        {{ form.plan_type|as_crispy_field }}
+      </div>    
+    </div>
+    <div class="row">
+      <div class="col-3">
+        {{ form.subscription_amount|as_crispy_field }}
+      </div>
+      <div class="col-3">
+        {{ form.data_limit|as_crispy_field }}
+      </div>        
+      <div class="col-2">
+        {{ form.data_charge|as_crispy_field }}
+      </div>      
+      <div class="col-2">
+        {{ form.bandwidth|as_crispy_field }}
+      </div>  
+    </div>
+
+    <div class="row">      
+        <div class="col-2"><button type="submit" class="btn btn-success btn-block">Save </button></div> 
+        <div class="col-2"><a href="{% url 'airwave:tariffplan_list' %}" class="btn btn-primary btn-block" >Cancel</a></div>    
+  </div>
+  </form>
+{% endblock %}

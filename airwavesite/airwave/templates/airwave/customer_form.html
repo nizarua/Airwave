@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post" novalidate style="line-height: 1rem;">
+    {% csrf_token %}
+    <h5>Personal Details</h5>
+    <div class="row" >    
+    	<div class="col-2" >{{ form.customer_id|as_crispy_field }}</div>
+		<div class="col-4">{{ form.name|as_crispy_field }}</div>
+		<div class="col-3">{{ form.email_id|as_crispy_field }}</div>
+		<div class="col-3">{{ form.profession|as_crispy_field }}</div>
+	</div>
+	<div class="row" >
+		<div class="col-2">{{ form.mobile1|as_crispy_field }}</div>
+		<div class="col-2">{{ form.mobile2|as_crispy_field }}</div>
+		<div class="col-2">{{ form.landline|as_crispy_field }}</div>	
+		<div class="col-3">{{ form.contact_name|as_crispy_field }}</div>
+		<div class="col-3">{{ form.area|as_crispy_field }}</div>
+	</div>
+	<hr>
+	<h5>Billing Details</h5>
+	<div class="row">		
+		<div class="col-4">{{ form.billing_address_line1|as_crispy_field }}</div>
+		<div class="col-4">{{ form.billing_address_line2|as_crispy_field }}</div>
+		<div class="col-4">{{ form.billing_address_line3|as_crispy_field }}</div>
+		<div class="col-4">{{ form.billing_address_city|as_crispy_field }}</div>
+		<div class="col-4">{{ form.billing_address_pincode|as_crispy_field }}</div>
+		<div class="col-4">{{ form.balance_due|as_crispy_field }}</div>
+
+	</div>
+	<hr>
+	<h5>Installation Address</h5>
+	<div class="row">
+		<div class="col-4">{{ form.installation_address_line1|as_crispy_field }}</div>
+		<div class="col-4">{{ form.installation_address_line2|as_crispy_field }}</div>
+		<div class="col-4">{{ form.installation_address_line3|as_crispy_field }}</div>
+		<div class="col-4">{{ form.installation_address_city|as_crispy_field }}</div>
+		<div class="col-4">{{ form.installation_address_pincode|as_crispy_field }}</div>
+	</div>
+	<hr>
+	<h5>Connection Details</h5>
+	<div class="row">
+		<div class="col-2">{{ form.connectivity_device|as_crispy_field }}</div>
+		<div class="col-2">{{ form.active_user_id|as_crispy_field }}</div>
+		<div class="col-2">{{ form.active_plan|as_crispy_field }}</div>
+		<div class="col-4">{{ form.activation_date|as_crispy_field }}</div>
+		<div class="col-2">{{ form.status|as_crispy_field }}</div>				
+	</div>	
+	<div class="row">
+		<div class="col-2">{{ form.allocated_ip|as_crispy_field }}</div>		
+		<div class="col-2">{{ form.isp|as_crispy_field }}</div>
+		<div class="col-2">{{ form.customer_type|as_crispy_field }}</div>
+		<div class="col-3">{{ form.parent_customer_id|as_crispy_field }}</div>
+		<div class="col-3">{{ form.connection_type|as_crispy_field }}</div>	
+		<div class="col-12">{{ form.remarks|as_crispy_field }}</div>
+    </div>
+
+    <center>
+    <div class="row">	    
+		    <div class="col-2"><button type="submit" class="btn btn-success btn-block">Save </button></div> 
+		    <div class="col-2"><a href="{% url 'airwave:customer_list' %}" class="btn btn-primary btn-block" >Cancel</a></div>		
+	</div>
+	<div class="row"> &nbsp; </div>
+  </form>
+{% endblock %}

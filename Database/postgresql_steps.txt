@@ -1,0 +1,164 @@
+-- Role: airwave_admin
+-- DROP ROLE airwave_admin;
+
+CREATE ROLE airwave_admin WITH
+  LOGIN
+  SUPERUSER
+  INHERIT
+  CREATEDB
+  CREATEROLE
+  REPLICATION;
+
+COMMENT ON ROLE airwave_admin IS 'Admin user for airware database';
+##################################################################
+CREATE ROLE airwave_user_role WITH
+	NOLOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD '*******';
+COMMENT ON ROLE airwave_user_role IS 'User Role for airwave database';
+
+CREATE ROLE airwave_user WITH
+	LOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD '*******';
+
+GRANT airwave_user_role TO airwave_user;
+COMMENT ON ROLE airwave_user IS 'User login for airwave database';
+##################################################################
+
+##################################################################
+
+***************************************************************************
+--Create folder C:\Shared\Airwave\posgresql_data and provide full permissions to NETWORK SERVICE
+-- Tablespace: ts_airwave
+
+-- DROP TABLESPACE ts_airwave;
+
+CREATE TABLESPACE ts_airwave
+  OWNER airwave_admin
+  LOCATION 'C:\Shared\Airwave\posgresql_data';
+
+ALTER TABLESPACE ts_airwave
+  OWNER TO airwave_admin;
+
+COMMENT ON TABLESPACE ts_airwave
+  IS 'table space for airwave db';
+***************************************************************************
+-- Database: airwave
+
+-- DROP DATABASE airwave;
+
+CREATE DATABASE airwave
+    WITH 
+    OWNER = airwave_admin
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'English_United States.1252'
+    LC_CTYPE = 'English_United States.1252'
+    TABLESPACE = ts_airwave
+    CONNECTION LIMIT = -1;
+
+COMMENT ON DATABASE airwave
+    IS 'database for airwave';
+
+###########################################################
+-- SCHEMA: airwave
+
+-- DROP SCHEMA airwave ;
+
+CREATE SCHEMA airwave
+    AUTHORIZATION postgres;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA airwave
+GRANT ALL ON TABLES TO airwave_user_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA airwave
+GRANT ALL ON SEQUENCES TO airwave_user_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA airwave
+GRANT EXECUTE ON FUNCTIONS TO airwave_user_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA airwave
+GRANT USAGE ON TYPES TO airwave_user_role;
+***************************************************************************
+###Creating plpython3u language extension##########
+#existing python path  
+#PYTHONHOME=C:\Users\nizar\Anaconda3
+#PYTHONPATH=C:\Users\nizar\Anaconda3
+
+1. Copy the mentioned DDL from the system32 folder to its original location.
+2. Start the command prompt in "Run as administrator" option.
+3. SET the PYTHON_HOME and PATH variable as below 
+c:\Program Files\PostgreSQL\12\bin>set PYTHON_HOME=C:\edb\languagepack\v1\Python-3.7
+c:\Program Files\PostgreSQL\12\bin>set PATH=C:\edb\languagepack\v1\Perl-5.26\bin;C:\edb\languagepack\v1\Python-3.7;C:\edb\languagepack\v1\Tcl-8.6\bin;%PATH%
+ 
+4. Restart the Database server 
+C:\Windows\system32>cd "c:\Program Files\PostgreSQL\12\bin"
+c:\Program Files\PostgreSQL\12\bin>pg_ctl.exe -D ..\data restart
+waiting for server to shut down.... done
+server stopped
+waiting for server to start....2019-08-16 16:27:56.304 +0530 [8992] LOG:  listening on IPv6 address "::", port 5432
+2019-08-16 16:27:56.304 +0530 [8992] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2019-08-16 16:27:56.366 +0530 [8992] LOG:  redirecting log output to logging collector process
+2019-08-16 16:27:56.366 +0530 [8992] HINT:  Future log output will appear in directory "log".
+ done
+server started
+
+5. Create the extension
+
+c:\Program Files\PostgreSQL\12\bin>psql.exe -U postgres
+Password for user postgres:
+psql (12.0)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# select version ();
+                          version
+------------------------------------------------------------
+ PostgreSQL 11.5, compiled by Visual C++ build 1914, 64-bit
+(1 row)
+
+postgres=# create extension plpython3u;
+CREATE EXTENSION
+
+postgres=# \dx plpython3u
+                         List of installed extensions
+    Name    | Version |   Schema   |                Description
+------------+---------+------------+-------------------------------------------
+ plpython3u | 1.0     | pg_catalog | PL/Python3U untrusted procedural language
+(1 row)
+
+
+postgres=# \dx+ plpython3u
+      Objects in extension "plpython3u"
+             Object description
+---------------------------------------------
+ function plpython3_call_handler()
+ function plpython3_inline_handler(internal)
+ function plpython3_validator(oid)
+ language plpython3u
+(4 rows)
+
+##################################################
+Set plpython3u as trusted language
+C:\Program Files\PostgreSQL\12\bin>psql.exe airwave postgres
+airwave=# select * from pg_language;
+airwave=# update pg_language set lanpltrusted = true where lanname = 'plpython3u';
+####################################################
+
+
+
+
+***************************************************************************
+

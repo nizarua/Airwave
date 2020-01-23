@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <p class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {{ message }}
+        </p>
+    {% endfor %}
+  {% endif %}
+
+  <p>    
+    <a href="{% url 'airwave:tariffplan_add' %}" class="btn btn-primary btn-sm">New TariffPlan</a>    
+  </p>
+  <table class="table table-bordered table-sm" style="font-size:0.75rem">
+    <thead>
+      <tr>
+        <th>Plan Name</th>        
+        <th>Billing Type</th>
+        <th>Billing Frequency</th>
+        <th>Subscription Amount (Rs.)</th>
+        <th>Data Limit (GB)</th>
+        <th>Data Charge (Rs./MB)</th>
+        <th>Plan Type </th>
+        <th>Bandwidth (Mbps)</th>
+        <th>Action</th>       
+      </tr>
+    </thead>
+    <tbody>
+      {% for plan in tariffplan %}
+        <tr>
+          <td>{{ plan.plan_name }}</a></td>          
+          <td>{{ plan.billing_type }}</td>
+          <td>{{ plan.billing_frequency }}</td>
+          <td>{{ plan.subscription_amount }}</td>
+          <td>{{ plan.data_limit }}</td>
+          <td>{{ plan.data_charge }}</td>
+          <td>{{ plan.plan_type }}</td>
+          <td>{{ plan.bandwidth }}</td>
+          <td>
+            <div class="btn-group" role="group" aria-label="actions">              
+              <a href="{% url 'airwave:tariffplan_edit' plan.pk %}" class="btn btn-primary btn-xs">Modify</a>
+              <a href="{% url 'airwave:tariffplan_delete' plan.pk %}" class="btn btn-danger btn-xs">Delete</a>
+            </div>
+          </td>        
+        </tr>
+      {% empty %}
+        <tr class="table-active">
+          <td colspan="3">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

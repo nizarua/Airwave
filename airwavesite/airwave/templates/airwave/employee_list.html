@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <p class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {{ message }}
+        </p>
+    {% endfor %}
+  {% endif %}
+  <p>
+    
+    <a href="{% url 'airwave:employee_add' %}" class="btn btn-primary btn-sm">New Employee</a>
+    
+  </p>
+  <table class="table table-bordered table-sm" style="font-size:0.75rem">
+    <thead>
+      <tr>
+        <th>Name</th>        
+        <th>Job Title</th>
+        <th>User Name</th>
+        <th>Mobile Number</th>
+        <th>Action</th>       
+      </tr>
+    </thead>
+    <tbody>
+      {% for staff in employee %}
+        <tr>
+          <td>{{ staff.name }}</a></td>          
+          <td>{{ staff.job_title }}</td>
+          <td>{{ staff.username }}</td>
+          <td>{{ staff.mobile }}</td>
+          <td>
+            <div class="btn-group" role="group" aria-label="Basic example">              
+              <a href="{% url 'airwave:employee_edit' staff.pk %}" class="btn btn-primary btn-xs">Modify</a>
+              <a href="{% url 'airwave:employee_delete' staff.pk %}" class="btn btn-danger btn-xs">Delete</a>
+            </div>
+          </td>        
+        </tr>
+      {% empty %}
+        <tr class="table-active">
+          <td colspan="3">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

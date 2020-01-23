@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+	<center><h4> {{heading}} Upload</h4></center>
+		{% if message %}		    
+	      	<p class="alert alert-dismissable alert-success">
+	        	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	        	{{ message }}
+	        </p>		    
+		{% endif %}
+    {% if errors %}
+      <ul class="list-group">
+        <li class="list-group-item">
+          <h5 class="mb-1">
+            Invalid data in below rows. Please correct the data and upload again.
+          </h5>
+        </li>
+        {% for error in errors %}
+          <li class="list-group-item list-group-item-danger">{{error}}</li>
+        {% endfor %}
+      </ul>
+      <br>
+    {% endif %}
+  		<form method="post" enctype="multipart/form-data">
+    		{% csrf_token %}
+    		<div class="row">
+      			<div class="col-4">
+    				<input type="file" name="myfile" class="btn btn-primary btn-block">  
+    			</div>
+    			<button type="submit" class="btn btn-primary">Upload</button>
+    		</div>    		
+  		</form>
+	
+{% endblock %}

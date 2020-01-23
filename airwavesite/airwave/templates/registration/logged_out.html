@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <center class="h5">
+        <p>Logged out!</p>  
+        <a href="{% url 'airwave:login'%}">Click here to login again.</a>
+    </center>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+    {% if form.errors %}
+        <p id="error" class="h5">Your username and password didn't match. Please try again.</p>
+        <br>
+    {% endif %}
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p class="h5">Your account doesn't have access to this page. To proceed,
+            please login with an account that has access.</p>
+        {% else %}
+            <p class="h5">Please login to see this page.</p>
+        {% endif %}
+    {% endif %}
+
+    <form class="form-signin" action="{% url 'airwave:login' %}" method="POST" id="rcorners">  
+        {% csrf_token %}
+        <p class="h5">Please sign in</p>  
+
+        <input type="text" id="id_username" name="username"  placeholder="Username" required autofocus> 
+        <input type="password" id="id_password" name="password"  placeholder="Password" required>
+        
+        <div class="checkbox mb-3">
+            <label class="h5">
+                <input type="checkbox" id="rememberme" name="rememberme" value="remember-me"> Remember me
+            </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+    {# Assumes you setup the password_reset view in your URLconf #}
+    <p class="h5"><a href="{% url 'airwave:password_reset' %}">Lost password?</a></p>
+</center>
+{% endblock %}

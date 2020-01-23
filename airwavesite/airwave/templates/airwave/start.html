@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% comment %}
+{{ perms.airwave }}
+{{ model_perms}}
+{% endcomment %}
+
+    <table class="table table-borderless table-sm" style="font-size: 0.75rem;">
+        <tbody>
+            <tr align="center">
+                <td><u><h4>SETTINGS:</h4></u></td>
+                <td><u><h4>MAPPINGS:</h4></u></td>
+                <td><u><h4>TRANSACTIONS:</h4></u></td>
+                <td><u><h4>REPORTS:</h4></u></td>
+            </tr>            
+            <tr valign="top">
+                <td>                    
+                    <table class="table table-bordered bg-transparent" style="font-size: 0.75rem;">
+                        <tbody>
+                            {% if 'employee_' in model_perms %}
+                                <tr>                             
+                                    <td><a href="{% url 'airwave:employee_list'%}" class="btn btn-primary  btn-block">Add/Modify Employees</a></td>
+                                </tr>                                
+                                
+                            {% endif %}
+                            {% if 'tariffplan_' in model_perms %}
+                                <tr>                                
+                                    <td><a href="{% url 'airwave:tariffplan_list'%}" class="btn btn-primary  btn-block">Add/Modify Tariff Plans</a></td>
+                                </tr>
+                                
+                            {% endif %}                            
+                            {% if 'area_' in model_perms %}
+                                <tr>
+                                    <td><a href="{% url 'airwave:area_list'%}" class="btn btn-primary  btn-block">Add/Modify Areas</a></td>
+                                </tr>
+                                
+                            {% endif %}                            
+                            {% if 'operator_' in model_perms %}
+                                <tr>
+                                    <td><a href="{% url 'airwave:operator_list'%}" class="btn btn-primary btn-block">Add/Modify Operators</a></td>
+                                </tr>                               
+                                
+                            {% endif %}
+                            {% if 'airwaveconfig_' in model_perms %}
+                                <tr>                                
+                                    <td><a href="{% url 'airwave:airwaveconfig_list'%}" class="btn btn-primary btn-block">Add/Modify Configuration</a></td>
+                                </tr>                                
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="table table-bordered bg-transparent" style="font-size: 0.75rem; ">
+                        <tbody>
+                            {% if 'customerplan_' in model_perms %}
+                                <tr>
+                                    <td><a href="{% url 'airwave:customerplan_list'%}" class="btn btn-primary btn-block">Add/Modify Customer Plans</a></td>
+                                </tr>
+                                
+                            {% endif %}
+                            {% if 'customeruserid_' in model_perms %}
+                                <tr>
+                                    <td><a href="{% url 'airwave:customeruserid_list'%}" class="btn btn-primary btn-block">Add/Modify Customer User ID</a></td>
+                                </tr>                                
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="table table-bordered bg-transparent" style="font-size: 0.75rem; ">
+                        <tbody>
+                            {% if 'customer_' in model_perms %}
+                                <tr>
+                                <td><a href="{% url 'airwave:customer_list'%}" class="btn btn-primary btn-block">Add/Modify Customer</a></td>
+                                </tr>
+                                
+                            {% endif %}
+
+                            {% if 'payments_' in model_perms %}
+                                <tr>
+                                <td><a href="{% url 'airwave:payments_list'%}" class="btn btn-primary btn-block">Payments</a></td>
+                                </tr>                                
+                            {% endif %}
+
+                            {% if 'billload_' in model_perms %}
+                                <tr>
+                                <td><a href="{% url 'airwave:upload' 'BILLS' %}" class="btn btn-primary btn-block">Upload Billing Sheet</a></td>
+                                </tr>
+                            {% endif %}
+
+                            {% if 'bbnlpaymentload_' in model_perms %}
+                                <tr>
+                                <td><a href="{% url 'airwave:upload' 'BBNL' %}" class="btn btn-primary btn-block">Upload BBNL Payments</a></td>
+                                </tr>
+                            {% endif %}
+
+                            {% if 'airwirepaymentload_' in model_perms %}
+                                <tr>
+                                <td><a href="{% url 'airwave:upload' 'AIRWIRE' %}" class="btn btn-primary btn-block">Upload Airwire Payments</a></td>
+                                </tr>
+                            {% endif %}
+
+                            {% if 'cashcollectionload_' in model_perms %}
+                                <tr>
+                                <td><a href="{% url 'airwave:upload' 'AIRWAVE' %}" class="btn btn-primary btn-block">Upload Airwave Collections</a></td>
+                                </tr>
+                            {% endif %}                            
+                            
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="table table-bordered bg-transparent" style="font-size: 0.75rem;">
+                        <tbody>
+                            {% if 'customer_' in model_perms %}
+                                <tr>
+                                <td><a href="" class="btn btn-primary btn-block">Payment Due Report</a></td>
+                                </tr>
+                                
+                            {% endif %}
+                            {% if perms.airwave.view_paymentduereport %}
+                                <tr><td colspan="2" align="center"><strong>Payment Due Report</strong></td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table> 
+   
+{% endblock %}
+
+        
+   
+    
+
+
+

@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <p class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {{ message }}
+        </p>
+    {% endfor %}
+  {% endif %}
+  <!--form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form-->
+  <form class="form-inline" action="{% url 'airwave:payments_list' %}" method="GET">
+    <div class="input-group input-group-sm mb-2 mr-sm-2">
+    <input type="text" name="custname" class="form-control" id="inlineFormInputName2" placeholder="Customer Name" value="{{request.GET.custname}}">
+  </div>
+    <div class="input-group input-group-sm mb-2 mr-sm-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">OR</div>
+      </div>
+      <input type="text" name="custid" class="form-control" id="inlineFormInputGroupUsername2" placeholder="Customer ID" value="{{request.GET.custid}}">
+    </div> 
+    <button type="submit" name="submit" value="Search" class="btn btn-primary mb-2 btn-sm">Search</button>
+    
+
+    {%if error_message %}
+      <div class="h6">&nbsp;&nbsp;{{error_message}}</div>
+    {% endif %}
+  </form>
+
+  <div class="h6" pgalign="right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;New customer or Non-customer payments: <a href="{% url 'airwave:airwavecollection_add' 0 %}" class="btn btn-primary btn-sm mr-1 ">Add Payment</a> </div>
+   
+
+
+  {% if submitbutton == 'Search' and request.GET.custid or request.GET.custname %}
+    <table class="table table-bordered table-sm " style="font-size:0.75rem">
+      <thead>
+        <tr>
+          <th>Customer ID</th>
+          <th>Customer Name</th>
+          <th>Area </th>          
+          <th>User ID</th>
+          <th>Due Amount</th> 
+          <th>Action</th>             
+        </tr>
+      </thead>
+      <tbody>
+        {% for cust in customers %}
+          <tr>
+            <td>{{ cust.customer_id }}</a></td>          
+            <td>{{ cust.name }}</td>
+            <td>{{ cust.area }}</td>            
+            <td>{{ cust.active_user_id }}</td>
+            <td>{{ cust.balance_due }}</td>            
+            <td>
+              <div class="btn-group" role="group" aria-label="actions"> 
+              <form class="form-inline my-0" action="{% url 'airwave:payments_list' %}" method="GET">   
+                <a href="{% url 'airwave:airwavecollection_add' cust.pk %}" class="btn btn-primary btn-xs mr-1 ">Add Payment</a>                
+                  <input type="hidden" name="customer_id" value="{{cust.pk}}">
+                  <button type="submit" name="listpayments" value="List" class="btn btn-primary btn-xs mr-1">List Payments</button>
+                </form>
+              </div>
+            </td>        
+          </tr>
+        {% empty %}
+          <tr class="table-active">
+            <td colspan="3">No customers found matching the criteria</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+  <hr>  
+   
+  {% if request.GET.listpayments %}  
+    <table class="table table-bordered table-sm" style="font-size:0.75rem">
+      <thead>
+        <tr>
+          <th>Customer ID</th>        
+          <th>Customer Name</th>
+          <th>Receipt No.</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Payment Type</th>
+          <th>Payment Channel</th>
+          <th>Action</th>       
+        </tr>
+      </thead>
+      <tbody>
+        {% for pay in payments %}
+          <tr>
+            <td>{{ pay.customer.customer_id }}</a></td>          
+            <td>{{ pay.customer.name }}</td>
+            <td>{{ pay.receipt_number }}</td>
+            <td>{{ pay.payment_date }}</td>
+            <td>{{ pay.payment_amount }}</td>
+            <td>{{ pay.payment_type }}</td>
+            <td>{{ pay.payment_channel }}</td>            
+            <td>
+              {% if pay.airwave_collection %}                
+                <div class="btn-group" role="group" aria-label="actions">                            
+                  <a href="{% url 'airwave:airwavecollection_edit' pay.airwave_collection.pk %}" class="btn btn-primary btn-xs">Modify</a>
+                  <a href="{% url 'airwave:airwavecollection_delete' pay.airwave_collection.pk %}" class="btn btn-danger btn-xs">Delete</a>
+                </div>
+              {% else %}
+                <div class="btn-group" role="group" aria-label="actions">                            
+                  <a href="{% url 'airwave:payments_edit' pay.pk %}" class="btn btn-primary btn-xs">Modify</a>
+                  <a href="{% url 'airwave:payments_delete' pay.pk %}" class="btn btn-danger btn-xs">Delete</a>
+                </div>
+              {% endif %}
+            </td>        
+          </tr>
+        {% empty %}
+          <tr class="table-active">
+            <td colspan="3">No data</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}    
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post" novalidate style="line-height: 1rem;">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-2">
+        {{ form.customer|as_crispy_field }}
+      </div> 
+      <div class="col-2">
+        {{ form.employee|as_crispy_field }}
+      </div> 
+      <div class="col-2">
+        {{ form.receipt_no|as_crispy_field }}
+      </div>      
+      <div class="col-2">
+        {{ form.collection_date|as_crispy_field }}
+      </div>
+      <div class="col-3">
+        {{ form.particulars|as_crispy_field }}
+      </div>
+    </div>   
+            
+    
+
+    <div class="row">      
+      <div class="col-2">
+        {{ form.cash_amount|as_crispy_field }}
+      </div>
+      <div class="col-2">
+        {{ form.online_amount|as_crispy_field }}
+      </div>
+      <div class="col-3">
+        {{ form.online_portal|as_crispy_field }}
+      </div>
+      <div class="col-2">
+        {{ form.bill_number|as_crispy_field }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        {{ form.cheque_amount|as_crispy_field }}
+      </div>
+      <div class="col-2">
+        {{ form.cheque_no|as_crispy_field }}
+      </div>
+      <div class="col-2">
+        {{ form.cheque_date|as_crispy_field }}
+      </div>        
+      <div class="col-3">
+        {{ form.bank_name|as_crispy_field }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        {{ form.wallet_amount|as_crispy_field }}
+      </div>
+      <div class="col-2">
+        {{ form.wallet_name|as_crispy_field }}
+      </div>
+      <div class="col-2">
+        {{ form.reference_no|as_crispy_field }}
+      </div>        
+      <div class="col-3">
+        {{ form.total_amount|as_crispy_field }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-7"> 
+        {{ form.remarks|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">      
+        <div class="col-2"><button type="submit" class="btn btn-success btn-block">Save </button></div> 
+        <div class="col-2"><a href="{% url 'airwave:payments_list' %}" class="btn btn-primary btn-block" >Cancel</a></div>    
+  </div>
+  </form>
+{% endblock %}

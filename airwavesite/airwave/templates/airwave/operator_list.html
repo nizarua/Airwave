@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <p class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {{ message }}
+        </p>
+    {% endfor %}
+  {% endif %}
+
+  <p>    
+    <a href="{% url 'airwave:operator_add' %}" class="btn btn-primary btn-sm">New Operator</a>    
+  </p>
+  <table class="table table-bordered table-sm" style="font-size:0.75rem">
+    <thead>
+      <tr>
+        <th>Operator Name</th>
+        <th>Area </th>        
+        <th>Action</th>       
+      </tr>
+    </thead>
+    <tbody>
+      {% for oper in operator %}
+        <tr>
+          <td>{{ oper.name }}</a></td>
+          <td>{{ oper.area }}</a></td>         
+          <td>
+            <div class="btn-group" role="group" aria-label="actions">              
+              <a href="{% url 'airwave:operator_edit' oper.pk %}" class="btn btn-primary btn-xs">Modify</a>
+              <a href="{% url 'airwave:operator_delete' oper.pk %}" class="btn btn-danger btn-xs">Delete</a>
+            </div>
+          </td>        
+        </tr>
+      {% empty %}
+        <tr class="table-active">
+          <td colspan="3">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

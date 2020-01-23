@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post" novalidate style="line-height: 1rem;">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-4">
+        {{ form.name|as_crispy_field }}
+      </div>
+      <div class="col-4">
+        {{ form.area|as_crispy_field }}
+      </div>         
+    </div>    
+    <div class="row">     
+        <div class="col-2"><button type="submit" class="btn btn-success btn-block">Save </button></div> 
+        <div class="col-2"><a href="{% url 'airwave:operator_list' %}" class="btn btn-primary btn-block" >Cancel</a></div>    
+  </div>
+  </form>
+{% endblock %}

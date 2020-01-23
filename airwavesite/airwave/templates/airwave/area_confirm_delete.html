@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <center>
+    <form method="post">
+        {% csrf_token %}
+        <p>
+          Do you really want to delete "{{ object.name }}"?
+        </p>
+        <button class="btn btn-primary btn-sm" type="submit">Confirm</button>  
+        <a href="{% url 'airwave:area_list' %}" class="btn btn-primary btn-sm" >Cancel</a>      
+    </form>
+
+{% endblock %}
